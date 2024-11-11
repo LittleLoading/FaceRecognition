@@ -1,13 +1,19 @@
 import cv2
 #Spustitelne pomoci prikazu ' python3 <misto souboru> '
 # Otevre prvni pripojenou kameru, prvni byva na indexu
-cap = cv2.VideoCapture(0)
 
+
+##Pouzijte pokud chcete vzit video z kamery
+#cap = cv2.VideoCapture(0)
+
+
+#Pouzijte pokud chcete video vzit ze souboru
+cap = cv2.VideoCapture("Video/video.mp4")
 
 #Nastaveni obdelniku - zatim provizorne
 startpoint = (100,50)
 endpoint = (125,80)
-color = (255,255,255)
+color = (0,0,0)
 thicnes = 2
     
 # Jestli se kamera neotevrela spravne
