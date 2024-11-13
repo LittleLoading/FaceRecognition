@@ -15,6 +15,14 @@ face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_fronta
 #Pouzijte pokud chcete video vzit ze souboru
 cap = cv2.VideoCapture("Video/video2.mp4")
 
+
+age_net = cv2.dnn.readNetFromCaffe("age_deploy.prototxt", "age_net.caffemodel")
+
+AGE_RANGES = ['(0-3)', '(4-6)', '(7-9)', '(10-12)', '(13-15)', '(16-18)', '(19-21)', '(22-24)', '(25-27)', '(28-30)', 
+              '(31-33)', '(34-36)', '(37-39)', '(40-42)', '(43-45)', '(46-48)', '(49-51)', '(52-54)', '(55-57)', 
+              '(58-60)', '(61-63)', '(64-66)', '(67-69)', '(70-72)', '(73-75)', '(76-78)', '(79-81)', '(82-84)', 
+              '(85-87)', '(88-90)', '(91-93)', '(94-96)', '(97-99)', '(100+)']
+
 # Jestli se kamera neotevrela spravne
 if not cap.isOpened():
     print("Nelze otevřít kameru")
@@ -51,7 +59,18 @@ while True:
         # x a y -> Levy horni roh obdelniku
         # w a h -> Sirka a vyska obdelniku
         cv2.rectangle(frame, (x, y), (x + h, y + w), (255, 0, 0), 3)
-    
+        
+        face_img = frame[y:y+h, x:x+w]
+        
+        blob = cv2.dnn.blobFromImage(face_img, 1.0, (227, 227), (78.4263377603, 87.7689143744, 114.895847746), swapRB=False)
+        age_net.setInput(blob)
+        age_preds = age_net.forward()
+        age = AGE_RANGES[age_preds[0].argmax()]
+
+        
+        label = f"Age: {age}"
+        cv2.putText(frame, label, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (255, 255, 255), 2)
+            
         
     ##Zobrazeni obrazu v okne
     cv2.imshow('Face Detection', frame)
