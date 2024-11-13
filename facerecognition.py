@@ -15,12 +15,6 @@ face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_fronta
 #Pouzijte pokud chcete video vzit ze souboru
 cap = cv2.VideoCapture("Video/video2.mp4")
 
-#Nastaveni obdelniku - zatim provizorne
-startpoint = (100,50)
-endpoint = (125,80)
-color = (0,0,0)
-thicnes = 2
-    
 # Jestli se kamera neotevrela spravne
 if not cap.isOpened():
     print("Nelze otevřít kameru")
